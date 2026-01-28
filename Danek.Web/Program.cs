@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Danek.DAL;
 using Danek.DAL.Models.Users;
+using Danek.Web.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
 
@@ -19,6 +20,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.ConfigureServices(builder.Configuration);
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
