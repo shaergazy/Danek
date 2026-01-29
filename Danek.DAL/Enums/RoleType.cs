@@ -8,4 +8,6 @@ public enum RoleType
     User = 1,
     [Description("Admin")]
     Admin = 2,
+    [Description("SuperAdmin")]
+    SuperAdmin = 3,
 }
