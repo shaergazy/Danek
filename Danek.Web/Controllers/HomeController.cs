@@ -1,7 +1,5 @@
 using System.Diagnostics;
-using Danek.DAL.Enums;
 using Danek.Web.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Danek.Web.Controllers
@@ -20,7 +18,6 @@ namespace Danek.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {
             return View();
