@@ -1,0 +1,19 @@
+﻿@using System.Text.Json
+@{
+    var success = TempData["success"] as string;
+    var error = TempData["error"] as string;
+}
+
+@if (!string.IsNullOrEmpty(success))
+{
+    <script type="text/javascript">
+        toastr.success(@Html.Raw(JsonSerializer.Serialize(success)));
+    </script>
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <script type="text/javascript">
+        toastr.error(@Html.Raw(JsonSerializer.Serialize(error)));
+    </script>
+}
