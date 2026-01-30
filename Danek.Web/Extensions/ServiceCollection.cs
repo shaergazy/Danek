@@ -1,4 +1,6 @@
-﻿using Danek.DAL;
+﻿using Danek.BLL.Services;
+using Danek.BLL.Services.Contracts;
+using Danek.DAL;
 using Danek.DAL.Repositories;
 using Danek.DAL.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ namespace Danek.Web.Extensions
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             RegisterServices(services, configuration);
+            services.ConfigMapper();
         }
 
         public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
@@ -18,6 +21,7 @@ namespace Danek.Web.Extensions
 
             services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             services.AddScoped(typeof(IUnitOfWork<,>), typeof(UnitOfWork<,>));
+            services.AddTransient<IBookService, BookService>();
         }
     }
 }

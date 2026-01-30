@@ -11,5 +11,6 @@
         Task<TEntity> CreateAsync(TAddDto dto);
         Task UpdateAsync(TEditDto dto);
         Task DeleteAsync(TKey id);
+        Task DeleteAsync(TEntity obj);
     }
 }

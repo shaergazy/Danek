@@ -1,22 +1,22 @@
-﻿using Danek.DAL;
-using Danek.Web.Models;
+﻿using Danek.BLL.DTOs;
+using Danek.BLL.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers
 {
     public class BookController : Controller
     {
-        private readonly AppDbContext _db;
+        private readonly IBookService _service;
 
-        public BookController(AppDbContext db)
+        public BookController(IBookService service)
         {
-            _db = db;
+            _service = service;
         }
 
         // ===================== INDEX =====================
         public IActionResult Index()
         {
-            List<Book> bookList = _db.Books.ToList();
+            var bookList = _service.GetAll();
             return View(bookList);
         }
 
@@ -28,12 +28,11 @@ namespace BulkyWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(Book obj)
+        public IActionResult Add(AddBookDto obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Books.Add(obj);
-                _db.SaveChanges();
+                _service.CreateAsync(obj);
                 TempData["success"] = "Book created successfully";
                 return RedirectToAction("Index");
             }
@@ -41,14 +40,14 @@ namespace BulkyWeb.Controllers
         }
 
         // ===================== EDIT =====================
-        public IActionResult Edit(Guid? id)
+        public async Task<IActionResult> EditAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {
                 return NotFound();
             }
 
-            Book? bookFromDb = _db.Books.Find(id);
+            GetBookDto bookFromDb = await _service.GetByIdAsync(id);
 
             if (bookFromDb == null)
             {
@@ -60,12 +59,11 @@ namespace BulkyWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Book obj)
+        public async Task<IActionResult> EditAsync(EditBookDto obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Books.Update(obj);
-                _db.SaveChanges();
+                await _service.UpdateAsync(obj);
                 TempData["success"] = "Book updated successfully";
                 return RedirectToAction("Index");
             }
@@ -73,14 +71,14 @@ namespace BulkyWeb.Controllers
         }
 
         // ===================== DELETE =====================
-        public IActionResult Delete(Guid? id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {
                 return NotFound();
             }
 
-            Book? bookFromDb = _db.Books.Find(id);
+            GetBookDto? bookFromDb = await _service.GetByIdAsync(id);
 
             if (bookFromDb == null)
             {
@@ -92,17 +90,16 @@ namespace BulkyWeb.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(Guid? id)
+        public async Task<IActionResult> DeletePOSTAsync(Guid id)
         {
-            Book? obj = _db.Books.Find(id);
+            GetBookDto? obj = await _service.GetByIdAsync(id);
 
             if (obj == null)
             {
                 return NotFound();
             }
 
-            _db.Books.Remove(obj);
-            _db.SaveChanges();
+            await _service.DeleteAsync(id);
             TempData["success"] = "Book deleted successfully";
             return RedirectToAction("Index");
         }

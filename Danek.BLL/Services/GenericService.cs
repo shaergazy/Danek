@@ -62,6 +62,12 @@ namespace Danek.BLL.Services
             _logger.LogInformation("Deleted entity with ID: {Id}", id);
         }
 
+        public virtual async Task DeleteAsync(TEntity obj)
+        {
+            await _unitOfWork.Repository.Remove(obj);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
         public virtual async Task<TEntity> BuildEntityForDelete(TKey id)
         {
             var entity = await _unitOfWork.Repository.GetByIdAsync(id);
