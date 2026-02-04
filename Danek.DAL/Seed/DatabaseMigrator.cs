@@ -115,6 +115,7 @@ namespace Danek.DAL.Seed
                         if (createResult.Succeeded)
                         {
                             logger.LogInformation("Admin user '{Email}' created successfully", adminEmail);
+
                             await userManager.AddToRoleAsync(admin, "User");
                             await userManager.AddToRoleAsync(admin, "SuperAdmin");
                             var addToRoleResult = await userManager.AddToRoleAsync(admin, adminRole);
@@ -147,7 +148,7 @@ namespace Danek.DAL.Seed
                             await userManager.AddToRoleAsync(existingAdmin, "User");
                             await userManager.AddToRoleAsync(existingAdmin, "SuperAdmin");
 
-                        if (addToRoleResult.Succeeded)
+                            if (addToRoleResult.Succeeded)
                             {
                                 logger.LogInformation("Admin role assigned to existing user '{Email}'", adminEmail);
                             }

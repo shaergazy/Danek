@@ -1,8 +1,10 @@
 ﻿using Danek.BLL.Services;
 using Danek.BLL.Services.Contracts;
 using Danek.DAL;
+using Danek.DAL.Models.Users;
 using Danek.DAL.Repositories;
 using Danek.DAL.Repositories.Contracts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Danek.Web.Extensions
@@ -21,6 +23,9 @@ namespace Danek.Web.Extensions
 
             services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             services.AddScoped(typeof(IUnitOfWork<,>), typeof(UnitOfWork<,>));
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<UserManager<User>>();
             services.AddTransient<IBookService, BookService>();
         }
     }
