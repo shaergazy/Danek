@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Danek.Web.Controllers
 {
-    //[Authorize]
+    [AllowAnonymous]
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -181,7 +181,7 @@ namespace Danek.Web.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (!await IsAdminAsync(User))

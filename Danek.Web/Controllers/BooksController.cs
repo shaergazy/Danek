@@ -1,14 +1,16 @@
 ﻿using Danek.BLL.DTOs;
 using Danek.BLL.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BulkyWeb.Controllers
+namespace Danek.Web.Controllers
 {
-    public class BookController : Controller
+    [AllowAnonymous]
+    public class BooksController : Controller
     {
         private readonly IBookService _service;
 
-        public BookController(IBookService service)
+        public BooksController(IBookService service)
         {
             _service = service;
         }

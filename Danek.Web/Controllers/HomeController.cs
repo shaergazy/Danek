@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Danek.DAL.Enums;
 using Danek.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

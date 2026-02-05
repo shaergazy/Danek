@@ -87,7 +87,7 @@ namespace Danek.DAL.Seed
             private static async Task SeedAdminUserAsync(UserManager<User> userManager, ILogger logger)
             {
                 const string adminEmail = "admin@danek.com";
-                const string adminPassword = "vrysmplpswd";
+                const string adminPassword = "Vrysmplpswd1!";
                 const string adminRole = "Admin";
 
                 try
@@ -101,6 +101,7 @@ namespace Danek.DAL.Seed
                             UserName = adminEmail,
                             Email = adminEmail,
                             TelegramUsername = adminEmail,
+                            IsActive = true,
                             EmailConfirmed = true,
                             PhoneNumber = "+10000000000",
                             PhoneNumberConfirmed = true,

@@ -29,7 +29,7 @@ namespace Danek.Web.Extensions
             using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
             scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate();
             var services = app.ApplicationServices.GetService<IServiceProvider>();
-            DatabaseMigrator.SeedDatabaseAsync(services).GetAwaiter().GetResult();
+            DatabaseMigrator.ReseedDatabaseAsync(services).GetAwaiter().GetResult();
         }
     }
 }
