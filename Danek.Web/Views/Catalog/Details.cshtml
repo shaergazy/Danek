@@ -1,0 +1,29 @@
+﻿@model Danek.Web.Models.Catalog.BookDetailsViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="row">
+    <div class="col-12">
+        <a asp-action="Index" class="btn btn-link mb-3">&larr; Назад к каталогу</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-8">
+        <h1>@Model.Title</h1>
+        <h5 class="text-muted">@Model.Author</h5>
+        <p class="mt-3">@Model.Description</p>
+        <hr />
+        <p><strong>Краткое описание:</strong> @Model.Intro</p>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Наличие:</strong> <span class="badge @(Model.Quantity > 0 ? "bg-success" : "bg-secondary")">@((Model.Quantity > 0) ? "В наличии" : "Нет в наличии")</span></p>
+                <p><strong>Количество:</strong> @Model.Quantity</p>
+                <p><strong>Дата добавления:</strong> @Model.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd")</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+﻿@model Danek.Web.Models.Catalog.BookListViewModel
+@{
+    ViewData["Title"] = "Каталог книг";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-sm-4">
+                <label class="form-label">Поиск</label>
+                <input name="q" value="@Model.Query" class="form-control" placeholder="Название или автор" />
+            </div>
+            <div class="col-sm-3">
+                <label class="form-label">Автор</label>
+                <select name="author" class="form-select">
+                    <option value="">Все авторы</option>
+                    @foreach (var a in Model.Authors)
+                    {
+                        <option value="@a" selected="@(a == Model.SelectedAuthor ? "selected" : null)">@a</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label class="form-label">Наличие</label>
+                <select name="inStock" class="form-select">
+                    <option value="">Все</option>
+                    <option value="true" selected="@(Model.InStock == true ? "selected" : null)">В наличии</option>
+                    <option value="false" selected="@(Model.InStock == false ? "selected" : null)">Нет в наличии</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label class="form-label">Сортировка / На странице</label>
+                <div class="d-flex gap-2">
+                    <select name="sortBy" class="form-select">
+                        <option value="title" selected="@(Model.SortBy == "title" ? "selected" : null)">По названию</option>
+                        <option value="date" selected="@(Model.SortBy == "date" ? "selected" : null)">По дате добавления</option>
+                        <option value="quantity" selected="@(Model.SortBy == "quantity" ? "selected" : null)">По количеству</option>
+                    </select>
+                    <select name="pageSize" class="form-select" style="width: 120px;">
+                        <option value="12" selected="@(Model.PageSize == 12 ? "selected" : null)">12</option>
+                        <option value="24" selected="@(Model.PageSize == 24 ? "selected" : null)">24</option>
+                        <option value="48" selected="@(Model.PageSize == 48 ? "selected" : null)">48</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-primary">Применить</button>
+                <a asp-action="Index" class="btn btn-link">Сброс</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+    @foreach (var book in Model.Books)
+    {
+        <div class="col">
+            @await Html.PartialAsync("_BookCard", book)
+        </div>
+    }
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.Page == 1 ? "disabled" : null)">
+                <a class="page-link" asp-action="Index" asp-route-q="@Model.Query" asp-route-author="@Model.SelectedAuthor" asp-route-inStock="@(Model.InStock?.ToString().ToLower())" asp-route-sortBy="@Model.SortBy" asp-route-page="@(Model.Page - 1)" asp-route-pageSize="@Model.PageSize">Назад</a>
+            </li>
+
+            @for (var p = 1; p <= Model.TotalPages; p++)
+            {
+                <li class="page-item @(p == Model.Page ? "active" : null)">
+                    <a class="page-link" asp-action="Index" asp-route-q="@Model.Query" asp-route-author="@Model.SelectedAuthor" asp-route-inStock="@(Model.InStock?.ToString().ToLower())" asp-route-sortBy="@Model.SortBy" asp-route-page="@p" asp-route-pageSize="@Model.PageSize">@p</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : null)">
+                <a class="page-link" asp-action="Index" asp-route-q="@Model.Query" asp-route-author="@Model.SelectedAuthor" asp-route-inStock="@(Model.InStock?.ToString().ToLower())" asp-route-sortBy="@Model.SortBy" asp-route-page="@(Model.Page + 1)" asp-route-pageSize="@Model.PageSize">Вперед</a>
+            </li>
+        </ul>
+    </nav>
+}
